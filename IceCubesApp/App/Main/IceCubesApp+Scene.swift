@@ -13,6 +13,8 @@ extension IceCubesApp {
           setupRevenueCat()
           refreshPushSubs()
         }
+        .environment(permissionBroker)
+        .environment(permissionLabResultStore)
         .withAppDependencyGraph(
           appAccountsManager: appAccountsManager,
           currentAccount: currentAccount,

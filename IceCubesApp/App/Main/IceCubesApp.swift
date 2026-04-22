@@ -29,8 +29,10 @@ struct IceCubesApp: App {
   @State var quickLook = QuickLook.shared
   @State var theme = Theme.shared
   @State var toastCenter = ToastCenter.shared
+  @State var permissionBroker = PermissionBroker.shared
+  @State var permissionLabResultStore = PermissionLabResultStore.shared
 
-  @State var selectedTab: AppTab = .timeline
+  @State var selectedTab: AppTab = .permissionLab
   @State var appRouterPath = RouterPath()
 
   @State var isSupporter: Bool = false

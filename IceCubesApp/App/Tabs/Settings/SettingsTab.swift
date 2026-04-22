@@ -161,6 +161,9 @@ struct SettingsTabs: View {
   @ViewBuilder
   private var generalSection: some View {
     Section("settings.section.general") {
+      NavigationLink(destination: PermissionLabHomeView()) {
+        Label("Permission Lab", systemImage: "lock.shield")
+      }
       if let instanceData = currentInstance.instance {
         NavigationLink(value: RouterDestination.instanceInfo(instance: instanceData)) {
           Label("settings.general.instance", systemImage: "server.rack")

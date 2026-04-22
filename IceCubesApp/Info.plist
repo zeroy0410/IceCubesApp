@@ -30,5 +30,33 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>权限实验室使用相机权限记录在用户可见拍摄操作下系统允许暴露的图像元数据范围。</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>权限实验室使用麦克风权限记录在用户显式触发的前台录音操作下系统允许暴露的音频文件元数据。</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>权限实验室使用相册权限对比系统选择器路径与 PhotoKit 完整授权路径下的元数据可见范围差异。</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>权限实验室不写入照片，此键仅用于静态合规审计配置完整性检查。</string>
+	<key>NSContactsUsageDescription</key>
+	<string>权限实验室使用通讯录权限检查在显式授权后哪些联系人字段可被读取，哪些仍被系统限制。</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>权限实验室使用日历权限检查在完整授权后日历事件字段的可见性边界。</string>
+	<key>NSRemindersFullAccessUsageDescription</key>
+	<string>权限实验室使用提醒事项权限检查在完整授权后提醒事项字段的可见性边界。</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>权限实验室使用定位权限记录在用户显式触发下单次与持续定位的坐标精度和可见字段范围。</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>权限实验室使用"始终允许"定位选项记录系统后台定位能力边界。实验平台不实现任何隐蔽后台持续定位。</string>
+	<key>NSMotionUsageDescription</key>
+	<string>权限实验室使用运动权限检查前台可访问的传感器能力和活动状态数据范围。</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>权限实验室使用媒体资料库权限检查在授权后可见的音乐元数据范围。</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>权限实验室使用本地网络权限记录 Bonjour 服务发现在用户显式触发下的系统提示行为与可见服务范围。</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_http._tcp</string>
+	</array>
 </dict>
 </plist>

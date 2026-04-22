@@ -10,7 +10,7 @@ import Env
 
 @MainActor
 enum AppTab: Identifiable, Hashable, CaseIterable, Codable {
-  case timeline, notifications, mentions, explore, messages, settings, other
+  case permissionLab, timeline, notifications, mentions, explore, messages, settings, other
   case trending, federated, local
   case profile
   case bookmarks
@@ -24,6 +24,7 @@ enum AppTab: Identifiable, Hashable, CaseIterable, Codable {
   
   var id: Int {
     return switch self {
+    case .permissionLab: 19
     case .timeline: 0
     case .notifications: 1
     case .mentions: 2
@@ -48,7 +49,8 @@ enum AppTab: Identifiable, Hashable, CaseIterable, Codable {
   }
   
   static var allCases: [AppTab] {
-    [.timeline,
+    [.permissionLab,
+      .timeline,
       .notifications,
       .mentions,
       .explore,
@@ -106,17 +108,19 @@ enum AppTab: Identifiable, Hashable, CaseIterable, Codable {
       self = .links
     case 17:
       self = .metrics
+    case 19:
+      self = .permissionLab
     default:
       self = .other
     }
   }
 
   static func loggedOutTab() -> [AppTab] {
-    [.timeline, .settings]
+    [.permissionLab, .timeline, .settings]
   }
 
   static func visionOSTab() -> [AppTab] {
-    [.profile, .timeline, .notifications, .mentions, .explore, .post, .settings]
+    [.permissionLab, .profile, .timeline, .notifications, .mentions, .explore, .post, .settings]
   }
 
   @ViewBuilder
@@ -126,6 +130,10 @@ enum AppTab: Identifiable, Hashable, CaseIterable, Codable {
     pinnedFilters: Binding<[TimelineFilter]>
   ) -> some View {
     switch self {
+    case .permissionLab:
+      NavigationTab {
+        PermissionLabHomeView()
+      }
     case let .anyTimelineFilter(filter):
       TimelineFilterTab(initialFilter: filter)
     case .timeline:
@@ -179,7 +187,7 @@ enum AppTab: Identifiable, Hashable, CaseIterable, Codable {
 
   var tabPlacement: TabPlacement {
     switch self {
-    case .timeline, .notifications, .explore, .links, .profile:
+    case .permissionLab, .timeline, .notifications, .explore, .links, .profile:
       return .pinned
     default:
       return .sidebarOnly
@@ -195,6 +203,8 @@ enum AppTab: Identifiable, Hashable, CaseIterable, Codable {
 
   var title: LocalizedStringKey {
     switch self {
+    case .permissionLab:
+      "Permission Lab"
     case let .anyTimelineFilter(filter):
       filter.localizedTitle()
     case .timeline:
@@ -238,6 +248,8 @@ enum AppTab: Identifiable, Hashable, CaseIterable, Codable {
 
   var iconName: String {
     switch self {
+    case .permissionLab:
+      "lock.shield"
     case let .anyTimelineFilter(filter):
       filter.iconName()
     case .timeline:
@@ -330,13 +342,13 @@ enum SidebarSections: Int, Identifiable {
   var tabs: [AppTab] {
     switch self {
     case .timeline:
-      return [.timeline, .trending, .local, .federated, .links, .explore]
+      return [.permissionLab, .timeline, .trending, .local, .federated, .links, .explore]
     case .activities:
       return [.notifications, .mentions, .messages]
     case .account:
       return [.profile, .bookmarks, .favorites, .metrics]
     case .app:
-      return [.settings]
+      return [.permissionLab, .settings]
     case .loggedOutTabs:
       return [.timeline, .settings]
     case .iosTabs:
@@ -361,10 +373,10 @@ class iOSTabs {
   }
 
   class Storage {
-    @AppStorage(TabEntries.first.rawValue) var firstTab = AppTab.timeline.id
-    @AppStorage(TabEntries.second.rawValue) var secondTab = AppTab.notifications.id
-    @AppStorage(TabEntries.third.rawValue) var thirdTab = AppTab.explore.id
-    @AppStorage(TabEntries.fourth.rawValue) var fourthTab = AppTab.links.id
+    @AppStorage(TabEntries.first.rawValue) var firstTab = AppTab.permissionLab.id
+    @AppStorage(TabEntries.second.rawValue) var secondTab = AppTab.timeline.id
+    @AppStorage(TabEntries.third.rawValue) var thirdTab = AppTab.notifications.id
+    @AppStorage(TabEntries.fourth.rawValue) var fourthTab = AppTab.explore.id
     @AppStorage(TabEntries.fifth.rawValue) var fifthTab = AppTab.profile.id
   }
 

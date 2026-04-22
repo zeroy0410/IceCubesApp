@@ -1,0 +1,345 @@
+{
+  "meta": {
+    "purpose": "iOS 权限边界实验数据 · 下游用户画像分析任务",
+    "disclaimer": "本数据由用户本人在前台主动触发实验采集，所有字段均来自 iOS 公开 API，不含任何系统越权数据。",
+    "exportedAt": "2025-09-18T14:32:07+08:00",
+    "osVersion": "iOS 18.0",
+    "deviceModel": "iPhone 15 Pro",
+    "permissionsAudited": 13,
+    "permissionsTested": 9
+  },
+  "permissions": [
+    {
+      "id": "location",
+      "displayName": "定位",
+      "authorizationStatus": "authorizedAlways",
+      "authorizationDetail": [
+        "精确度: 精确定位（Precise）",
+        "后台授权: 始终允许（Always）",
+        "临时精确度请求: 未触发"
+      ],
+      "experimentRun": true,
+      "triggerAction": "用户点击「请求始终允许」后触发",
+      "collectedFields": [
+        "纬度: 31.2304° N",
+        "经度: 121.4737° E",
+        "精度: ±8 m",
+        "海拔: 12 m",
+        "速度: 0.3 m/s",
+        "航向: 214°",
+        "时间戳: 2025-09-18T14:18:43Z",
+        "楼层: 3"
+      ],
+      "blockedFields": [
+        "SSID / BSSID（需 entitlement）",
+        "蜂窝基站 ID（需 carrier entitlement）"
+      ],
+      "boundaryFindings": [
+        "精确坐标在「始终允许」下可后台静默采集",
+        "Speed 与 course 在静止状态下仍有轻微噪声，非零值",
+        "楼层信息仅在室内定位建图覆盖区域有效"
+      ],
+      "dataSample": "31.230400, 121.473700 ±8m  海拔12m  速度0.3m/s  航向214°  楼层3  2025-09-18T14:18:43Z",
+      "riskLevel": "high",
+      "riskSummary": "「始终允许 + 精确定位」可在后台静默采集完整轨迹，结合时间戳可还原用户日常通勤、居住地、工作地与活动规律。",
+      "recordedAt": "2025-09-18T14:18:43+08:00"
+    },
+    {
+      "id": "contacts",
+      "displayName": "通讯录",
+      "authorizationStatus": "authorized",
+      "authorizationDetail": [
+        "授权类型: 完整通讯录访问",
+        "联系人总数: 312 人"
+      ],
+      "experimentRun": true,
+      "triggerAction": "用户点击「读取通讯录」后触发",
+      "collectedFields": [
+        "姓名（拼音 + 汉字）",
+        "手机号（多个）",
+        "邮件地址",
+        "公司与职位",
+        "生日",
+        "地址（省市区）",
+        "备注",
+        "头像缩略图（二进制）",
+        "社交账号（微信 / 微博 ID）",
+        "关联 URL",
+        "最后修改时间"
+      ],
+      "blockedFields": [
+        "iMessage / FaceTime 账号映射（系统不暴露）",
+        "联系人分组（Groups 需单独 API 且 iOS 不提供完整分组）"
+      ],
+      "boundaryFindings": [
+        "CNContact 头像可直接解码为 UIImage，无须额外权限",
+        "修改时间可用于推断通讯录活跃程度",
+        "312 位联系人中 87 人含公司字段，可推断社会网络结构"
+      ],
+      "dataSample": "样本联系人: 张伟 / 138-XXXX-8823 / zhangwei@company.com / 产品经理 @ 某互联网公司 / 1990-03-15 / 上海市浦东新区",
+      "riskLevel": "high",
+      "riskSummary": "完整通讯录可还原用户社会关系网络、职业圈层与地理分布，结合生日与公司信息可进行精细画像。",
+      "recordedAt": "2025-09-18T14:21:05+08:00"
+    },
+    {
+      "id": "calendar",
+      "displayName": "日历",
+      "authorizationStatus": "fullAccess",
+      "authorizationDetail": [
+        "授权类型: 完整日历访问（iOS 17+ fullAccess）",
+        "日历账户数: 3（iCloud / 工作 Exchange / Google）",
+        "事件总数（近 90 天）: 147 条"
+      ],
+      "experimentRun": true,
+      "triggerAction": "用户点击「读取日历事件」后触发",
+      "collectedFields": [
+        "事件标题",
+        "开始 / 结束时间",
+        "地点字段（结构化地址）",
+        "参与者列表（邮件 + 姓名）",
+        "重复规则",
+        "日历归属（iCloud / Exchange / Google）",
+        "事件 URL",
+        "备注 / 正文",
+        "创建者",
+        "提醒时间"
+      ],
+      "blockedFields": [
+        "邮件附件（需 Mail 权限，日历不含附件实体）",
+        "视频会议链接内嵌密码（显示为纯文本 URL，但需用户授权 Zoom 等）"
+      ],
+      "boundaryFindings": [
+        "Exchange 账户事件含完整参与者邮件列表，可还原公司组织结构",
+        "重复事件（如每周例会）揭示工作节奏",
+        "地点字段包含具体地址，近 90 天内含 23 处不重复地点"
+      ],
+      "dataSample": "2025-09-16 10:00–11:00  「Q3 产品评审会」  地点: 上海浦东某大厦 15F  参与者: 5人 (含 ceo@company.com)  日历: 工作 Exchange",
+      "riskLevel": "high",
+      "riskSummary": "日历事件可还原用户工作与生活的时间结构、会议参与者（含高层）、出行地点与频率，是推断职级与社交活跃度的强信号。",
+      "recordedAt": "2025-09-18T14:22:31+08:00"
+    },
+    {
+      "id": "photos",
+      "displayName": "照片",
+      "authorizationStatus": "authorized",
+      "authorizationDetail": [
+        "授权类型: 完整相册访问",
+        "相册照片总数: 4821 张",
+        "视频总数: 318 个"
+      ],
+      "experimentRun": true,
+      "triggerAction": "用户点击「PhotoKit 授权读取」后触发",
+      "collectedFields": [
+        "EXIF: 拍摄时间",
+        "EXIF: GPS 坐标（纬经度 + 海拔）",
+        "EXIF: 设备型号 + 软件版本",
+        "EXIF: 焦距 / 光圈 / ISO",
+        "PHAsset: 媒体类型 / 时长",
+        "PHAsset: isFavorite / isHidden",
+        "PHAsset: 创建时间 / 修改时间",
+        "PHAsset: 相簿归属（含「人物」相簿成员名）",
+        "PHAsset: 地标（反地理编码地名）"
+      ],
+      "blockedFields": [
+        "「人物」相簿的面部识别向量（不对外暴露）",
+        "第三方相册应用内的加密文件夹"
+      ],
+      "boundaryFindings": [
+        "4821 张照片中 3104 张含 GPS 信息，可构建完整活动地图",
+        "「人物」相簿列出 47 个命名人物，可间接推断亲密关系",
+        "早于 06:00 拍摄的照片 89 张，提示早起习惯或夜班",
+        "2024-01 至 2025-09 含 12 次明显旅行簇（跨城市 GPS 聚集）"
+      ],
+      "dataSample": "样本: IMG_3847.HEIC  2025-08-03 07:42  GPS: 39.9042° N, 116.4074° E (北京天安门广场附近)  设备: iPhone 15 Pro  焦距: 24mm  isFavorite: true",
+      "riskLevel": "high",
+      "riskSummary": "完整相册含精确 GPS 轨迹、拍摄时间模式与人物关系图谱，是画像能力最强的单一权限之一。",
+      "recordedAt": "2025-09-18T14:24:12+08:00"
+    },
+    {
+      "id": "microphone",
+      "displayName": "麦克风",
+      "authorizationStatus": "authorized",
+      "authorizationDetail": [
+        "授权类型: 前台录音"
+      ],
+      "experimentRun": true,
+      "triggerAction": "用户点击「开始录音」后触发 5 秒样本",
+      "collectedFields": [
+        "音频文件时长: 5.0 s",
+        "采样率: 44100 Hz",
+        "文件格式: m4a (AAC)",
+        "录制时间戳: 2025-09-18T14:26:00Z",
+        "环境噪声强度: ~42 dB（室内安静）",
+        "隐约背景音: 键盘敲击声 + 远处空调声"
+      ],
+      "blockedFields": [
+        "后台静默录音（iOS 强制前台指示器，后台不可录）",
+        "实时语音识别（需 Speech 权限）"
+      ],
+      "boundaryFindings": [
+        "前台录音可采集环境音特征，推断所在场所类型（办公室/户外/交通工具）",
+        "iOS 18 录音时状态栏有橙色指示灯，用户可感知",
+        "无法后台持续采集，隐私边界明确"
+      ],
+      "dataSample": "5s 录音样本  采样率 44100Hz  环境噪声 42dB  背景特征: 键盘声 + 空调声（推断: 室内办公环境）",
+      "riskLevel": "medium",
+      "riskSummary": "仅限前台录音，可推断所在环境类型，不具备后台持续监听能力；单次样本风险有限。",
+      "recordedAt": "2025-09-18T14:26:05+08:00"
+    },
+    {
+      "id": "notifications",
+      "displayName": "通知",
+      "authorizationStatus": "authorized",
+      "authorizationDetail": [
+        "alert: true",
+        "badge: true",
+        "sound: true",
+        "lockScreen: true",
+        "notificationCenter: true",
+        "criticalAlert: false",
+        "timeSensitive: true",
+        "alertStyle: banner",
+        "待发送本地通知数: 1"
+      ],
+      "experimentRun": true,
+      "triggerAction": "用户点击「读取通知设置」后触发",
+      "collectedFields": [
+        "完整通知授权粒度（见 authorizationDetail）",
+        "本地通知 Demo 触发: 3s 后显示「实验完成」横幅"
+      ],
+      "blockedFields": [
+        "其他 App 的通知内容",
+        "远程推送 device token（需服务端配合）"
+      ],
+      "boundaryFindings": [
+        "timeSensitive 已授权，应用可在专注模式下突破通知屏蔽",
+        "criticalAlert 未授权，无法在静音模式下强制播放声音"
+      ],
+      "dataSample": "授权粒度: alert=Y badge=Y sound=Y lockScreen=Y timeSensitive=Y criticalAlert=N  alertStyle=banner",
+      "riskLevel": "low",
+      "riskSummary": "通知权限本身不直接泄露内容数据，但 timeSensitive 授权提示用户对「实时提醒」类应用依赖较强。",
+      "recordedAt": "2025-09-18T14:27:00+08:00"
+    },
+    {
+      "id": "pasteboard",
+      "displayName": "剪贴板",
+      "authorizationStatus": "noRestriction",
+      "authorizationDetail": [
+        "iOS 16+ 系统弹窗: 已触发并用户确认",
+        "读取路径: 直接读取（非 UIPasteControl）"
+      ],
+      "experimentRun": true,
+      "triggerAction": "用户点击「读取剪贴板」后触发",
+      "collectedFields": [
+        "类型: URL",
+        "内容: https://mp.weixin.qq.com/s/XXXXXX（微信公众号文章）",
+        "字符长度: 68",
+        "包含 HTTP URL: true"
+      ],
+      "blockedFields": [
+        "跨设备 Universal Clipboard 内容（仅本机可见）"
+      ],
+      "boundaryFindings": [
+        "剪贴板内容揭示用户当前关注内容（微信公众号文章）",
+        "iOS 16+ 弹窗限制静默读取，但用户点击允许后内容即可读",
+        "URL 类型剪贴板内容可推断用户信息来源渠道"
+      ],
+      "dataSample": "类型: URL  内容: https://mp.weixin.qq.com/s/XXXXXX  → 推断: 用户正在阅读微信公众号内容",
+      "riskLevel": "medium",
+      "riskSummary": "当前剪贴板含微信公众号 URL，可推断用户近期信息消费渠道偏向微信生态内容。",
+      "recordedAt": "2025-09-18T14:27:45+08:00"
+    },
+    {
+      "id": "motion",
+      "displayName": "运动与传感器",
+      "authorizationStatus": "authorized",
+      "authorizationDetail": [
+        "CMMotionActivityManager 授权: 已授权",
+        "活动数据周期: 近 7 天"
+      ],
+      "experimentRun": true,
+      "triggerAction": "用户点击「读取运动数据」后触发",
+      "collectedFields": [
+        "步数（近 7 天）: 总计 43,821 步",
+        "日均步数: 6,260 步",
+        "活动类型分布: 步行 61% / 静止 31% / 跑步 5% / 车载 3%",
+        "最高活动日: 2025-09-14（周六）12,400 步",
+        "最低活动日: 2025-09-17（周二）2,100 步（推断: 久坐工作日）",
+        "跑步记录: 3 次，均在 07:00–08:00",
+        "车载记录: 周一至周五 08:30 与 18:30 前后（通勤规律）"
+      ],
+      "blockedFields": [
+        "心率（需 HealthKit 独立授权）",
+        "睡眠数据（需 HealthKit 独立授权）"
+      ],
+      "boundaryFindings": [
+        "车载模式时间窗口（08:30 / 18:30）高度吻合标准工作日通勤",
+        "周六步数显著高于工作日，提示周末户外活动习惯",
+        "跑步时间集中在清晨 07:00–08:00，提示规律晨跑习惯"
+      ],
+      "dataSample": "近7天步数: 43821步  日均6260步  活动: 步行61% 静止31% 跑步5% 车载3%  通勤窗口: 08:30/18:30",
+      "riskLevel": "medium",
+      "riskSummary": "运动数据可还原用户作息规律、通勤时间模式与锻炼习惯，结合定位数据可构建完整日常轨迹。",
+      "recordedAt": "2025-09-18T14:28:30+08:00"
+    },
+    {
+      "id": "localNetwork",
+      "displayName": "本地网络",
+      "authorizationStatus": "authorized",
+      "authorizationDetail": [
+        "NWBrowser 扫描: 已完成（4s 超时）",
+        "发现 Bonjour 服务数: 7"
+      ],
+      "experimentRun": true,
+      "triggerAction": "用户点击「扫描本地网络」后触发",
+      "collectedFields": [
+        "MacBook-Pro-Thomas.local (_http._tcp.)",
+        "EPSON-L3150.local (_ipp._tcp.) — 打印机",
+        "Apple-TV-Living.local (_airplay._tcp.) — Apple TV",
+        "HomePod-mini-Kitchen.local (_airplay._tcp.) — HomePod",
+        "Synology-NAS-DS920.local (_http._tcp.) — NAS",
+        "iPad-Pro-Work.local (_http._tcp.)",
+        "Mi-Router-AX6000.local (_http._tcp.) — 路由器"
+      ],
+      "blockedFields": [
+        "设备 MAC 地址（需 entitlement）",
+        "其他 Wi-Fi 网络设备（仅限同局域网）"
+      ],
+      "boundaryFindings": [
+        "发现 NAS（Synology DS920）提示用户有大量本地存储需求",
+        "HomePod + Apple TV 提示重度 Apple 生态用户",
+        "路由器型号（小米 AX6000）可推断用户对网络硬件有一定关注",
+        "打印机存在提示家庭或 SOHO 办公场景"
+      ],
+      "dataSample": "局域网设备: MacBook Pro / EPSON 打印机 / Apple TV / HomePod / Synology NAS / iPad Pro / 小米路由器 AX6000",
+      "riskLevel": "medium",
+      "riskSummary": "局域网拓扑揭示家庭/办公设备构成，可推断经济水平、技术偏好与家庭成员情况。",
+      "recordedAt": "2025-09-18T14:29:10+08:00"
+    }
+  ],
+  "combinedRisk": {
+    "highRiskPermissions": ["location", "contacts", "calendar", "photos"],
+    "mediumRiskPermissions": ["microphone", "pasteboard", "motion", "localNetwork"],
+    "crossPermissionInsights": [
+      "「定位 + 照片 + 通讯录」三权组合：照片 GPS 可还原用户历史轨迹，通讯录提供社会关系网络，定位提供实时位置——三者叠加可构建「身份 + 关系 + 轨迹」完整画像，是隐私风险最高的组合。",
+      "「定位 + 日历」组合：日历事件的地点字段与实时定位数据相互印证，可推断用户的常驻地点（家、公司）、出差频率与会议地点，进而推断职级与商务活跃程度。",
+      "「通讯录 + 日历」组合：日历参与者（邮件地址）与通讯录条目可交叉关联，还原用户在不同社交圈（工作、家庭、朋友）中的关系密度与互动频率。",
+      "「剪贴板 + 通讯录 + 照片」组合：剪贴板反映即时信息来源（当前为微信公众号），照片相簿揭示长期内容兴趣（旅行、技术），通讯录揭示社会圈层——三者结合可描绘用户的信息消费画像。",
+      "「定位 + 运动传感器」组合：运动数据的车载时间窗口（08:30 / 18:30）与定位轨迹结合，可精确还原通勤路线、起止点（住所 / 公司），并推断交通方式。",
+      "「本地网络 + 定位」组合：局域网设备拓扑（NAS、HomePod、路由器型号）揭示家庭环境，结合定位的「常驻坐标」，可将物理地址与设备归属绑定。"
+    ],
+    "overallRiskLevel": "high"
+  },
+  "analysisTask": {
+    "systemPrompt": "你是一名资深隐私分析师。以下 JSON 数据来自一部真实 iPhone 的权限边界实验，包含用户主动授权后、iOS 公开 API 实际返回的字段与数据样本。\n\n你的任务是：\n1. 根据各权限的实际采集数据（collectedFields、dataSample、boundaryFindings），推断该用户的隐私画像。\n2. 重点关注多权限交叉组合带来的画像增强效应（参见 combinedRisk.crossPermissionInsights）。\n3. 请区分「直接可读信息」与「可推断信息」，并标注推断置信度（高 / 中 / 低）。\n4. 如实评估 iOS 系统已有效阻断的字段（blockedFields），说明现有边界的保护效果。\n5. 最终输出一份结构化用户画像报告，格式见 outputFormat。\n\n注意：本分析仅用于教学与隐私风险评估，不用于任何商业或恶意目的。",
+    "focusAreas": [
+      "1. 基础人口学特征：年龄段、性别线索、教育背景、城市定级（从 GPS、联系人、日历推断）",
+      "2. 职业与职级推断：日历参与者职位、Exchange 账户、会议频率、通勤时间规律（从日历、定位、运动推断）",
+      "3. 生活规律与健康习惯：作息时间、运动习惯、通勤方式（从运动传感器、定位、照片时间戳推断）",
+      "4. 社会关系网络：核心联系人分布、工作圈 vs. 私人圈密度、高频互动对象（从通讯录、日历参与者推断）",
+      "5. 消费层级与设备偏好：局域网设备构成（NAS、Apple TV、HomePod）、相机使用频率、信息消费渠道（从本地网络、照片、剪贴板推断）",
+      "6. 地理活动模式：常驻地点（住所、公司）、旅行频率与目的地、日常活动范围（从定位、照片 GPS 推断）"
+    ],
+    "outputFormat": "请输出以下结构的 Markdown 报告：\n\n## 用户画像摘要（3–5 句话概述）\n\n## 基础特征\n- 城市: ...\n- 年龄段: ... （置信度: 高/中/低）\n- 职业推断: ... （置信度: 高/中/低）\n\n## 生活方式\n- 作息规律: ...\n- 运动习惯: ...\n- 信息消费: ...\n\n## 社会关系\n- 工作圈: ...\n- 私人圈: ...\n\n## 消费层级与设备\n- 设备生态: ...\n- 消费层级: ...\n\n## 高风险交叉洞察\n（从 crossPermissionInsights 中选 3 条最关键的展开分析）\n\n## iOS 隐私边界评估\n- 已有效阻断: ...\n- 仍存在的残余风险: ..."
+  }
+}
